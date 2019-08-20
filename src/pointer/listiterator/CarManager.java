@@ -1,25 +1,21 @@
 package pointer.listiterator;
 
-import pointer.listiterator.actions.CarBuilder;
 import pointer.listiterator.actions.Changer;
 import pointer.listiterator.actions.Deleter;
 import pointer.listiterator.actions.Search;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class CarManager {
 
     private static final String WITH = "with";
     private static final String WITHOUT = "without";
 
-    private CarBuilder builder = new CarBuilder();
     private Search search = new Search();
     private Changer changer = new Changer();
     private Deleter remover = new Deleter();
-
-    public void setBuilder(CarBuilder builder) {
-        this.builder = builder;
-    }
 
     public void setSearch(Search search) {
         this.search = search;
@@ -51,7 +47,7 @@ public class CarManager {
     }
 
     public void addCarToList(ListIterator<Car> carListIterator, String[] params) {
-        Car car = builder.buildNewCar(params[0], params[1], params[2], params[3]);
+        Car car = changer.buildNewCar(params[0], params[1], params[2], params[3]);
 
         if (car == null) {
             return;
