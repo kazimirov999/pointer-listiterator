@@ -15,4 +15,8 @@ public enum BodyTypes {
     BodyTypes(String bodyType) {
         this.bodyType = bodyType;
     }
+
+    public static BodyTypes toEnum(String inputBodyType) {
+        return BodyTypes.valueOf(inputBodyType.toUpperCase());
+    }
 }

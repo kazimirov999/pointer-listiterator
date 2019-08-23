@@ -2,12 +2,11 @@ public class Wheel {
 
     private float pressure;
     private int diameter;
-    private boolean areWinter = false;
+    private boolean isWinter = false;
 
     Wheel() {
         this.pressure = 2.34f;
         this.diameter = 15;
-        ;
     }
 
     Wheel(int diameter) {
@@ -15,10 +14,10 @@ public class Wheel {
         this.pressure = 2.34f;
     }
 
-    Wheel(int diameter, boolean areWinter) {
+    Wheel(int diameter, boolean isWinter) {
         this.diameter = diameter;
         this.pressure = 2.34f;
-        this.areWinter = areWinter;
+        this.isWinter = isWinter;
     }
 
     public float getPressure() {
@@ -34,7 +33,7 @@ public class Wheel {
     }
 
     public void setType(boolean areWinter) {
-        this.areWinter = areWinter;
+        this.isWinter = areWinter;
     }
 
     void pump(float pressure) {

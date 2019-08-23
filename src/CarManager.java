@@ -1,15 +1,36 @@
 import java.util.*;
 
 public class CarManager {
-    List<Car> carList = new ArrayList<>();
+    private List<Car> carList = new ArrayList<>();
+    private List<Integer> carIndices = new ArrayList<>();
     private Scanner scan = new Scanner(System.in);
+
+    public void createCar(String name, Engine engine, Body body, SteeringWheel steeringWheel, Wheel wheels, Tank tank) {
+        carList.add(new Car(name, engine, body, steeringWheel, wheels, tank));
+    }
+
+    public void createDefaultCar() {
+        carList.add(new Car());
+    }
+
+    public void printAllCarNames() {
+        for (Car car : carList) {
+            System.out.println(car.getName());
+        }
+    }
+
+    public void printRememberedCarIndices() {
+        for (Integer index : carIndices) {
+            System.out.println(index);
+        }
+    }
 
     public void searchByDiameter() {
         System.out.println("Input diameter");
         int inputDiameter = scan.nextInt();
-        for (int i = 0; i < carList.size(); i++) {
-            if (carList.get(i).getWheels().getDiameter() == inputDiameter) {
-                System.out.println(carList.get(i).getName());
+        for (Car car : carList) {
+            if (car.getWheels().getDiameter() == inputDiameter) {
+                System.out.println(car.getName());
             }
         }
     }
@@ -18,23 +39,22 @@ public class CarManager {
         System.out.println("Input diameter:");
         int inputDiameter = scan.nextInt();
         System.out.println("Input color:");
-        Colors inputColor = Colors.valueOf(scan.next().toUpperCase());
-        for (int i = 0; i < carList.size(); i++) {
-            if (carList.get(i).getWheels().getDiameter() == inputDiameter && carList.get(i).getBody().getColor() == inputColor) {
-                System.out.println(carList.get(i).getName());
+        Colors inputColor = Colors.toEnum(scan.next());
+        for (Car car : carList) {
+            if (car.getWheels().getDiameter() == inputDiameter && car.getBody().getColor() == inputColor) {
+                System.out.println(car.getName());
             }
         }
     }
 
     public void replaceSteeringWheelsOfRedCars() {
-        for (int i = 0; i < carList.size(); i++) {
-            if (carList.get(i).getBody().getColor() == Colors.RED) {
+        for (Car car : carList) {
+            if (car.getBody().getColor() == Colors.RED) {
                 String preferedSteeringWheelType = scan.next();
-                if (preferedSteeringWheelType == "Multifunctioned") {
-                    carList.get(i).getSteeringWheel().setType(true);
-                } else if (preferedSteeringWheelType == "Common") {
-                    carList.get(i).getSteeringWheel().setType(false);
-                    ;
+                if (preferedSteeringWheelType.equals("Multifunctioned")) {
+                    car.getSteeringWheel().setType(true);
+                } else if (preferedSteeringWheelType.equals("Common")) {
+                    car.getSteeringWheel().setType(false);
                 } else {
                     System.out.println("You have chosen wrong steering wheel type. Failed changing");
                 }
@@ -43,9 +63,9 @@ public class CarManager {
     }
 
     public void multiplyDiameterByTwoWhenSteeringWheelIsMultifunctioned() {
-        for (int i = 0; i < carList.size(); i++) {
-            if (carList.get(i).getSteeringWheel().isMuiltifunctioned()) {
-                carList.get(i).getWheels().setDiameter(carList.get(i).getWheels().getDiameter() * 2);
+        for (Car car : carList) {
+            if (car.getSteeringWheel().isMuiltifunctioned()) {
+                car.getWheels().setDiameter(car.getWheels().getDiameter() * 2);
             }
         }
     }
@@ -53,82 +73,82 @@ public class CarManager {
     public void replaceCarsWhenDiameterIsLessThanEntered() {
         System.out.println("Input diameter:");
         int inputDiameter = scan.nextInt();
-        for (int i = 0; i < carList.size(); i++) {
-            if (carList.get(i).getWheels().getDiameter() < inputDiameter) {
-                carList.add(i, new Car());
+        for (Car car : carList) {
+            if (car.getWheels().getDiameter() < inputDiameter) {
+                carList.set(carList.indexOf(car), new Car());
+
             }
         }
     }
 
     public void findCarsWithInputBodyType() {
-        ListIterator<Car> listIterator = carList.listIterator();
+        Iterator<Car> iterator = carList.iterator();
         System.out.println("Input body type:");
-        BodyTypes inputGBodyType = BodyTypes.valueOf(scan.next().toUpperCase());
-        while (listIterator.hasNext()) {
-            listIterator.next();
-            boolean inputBodyTypeIsEqualToInitial = carList.get(listIterator.previousIndex()).getBody().getType().equals(inputGBodyType);
+        BodyTypes inputBodyType = BodyTypes.toEnum(scan.next());
+        while (iterator.hasNext()) {
+            Car currentCar = iterator.next();
+            boolean inputBodyTypeIsEqualToInitial = currentCar.getBody().getType() == inputBodyType;
             if (inputBodyTypeIsEqualToInitial) {
-                System.out.println(carList.get(listIterator.previousIndex()).getName());
+                System.out.println(currentCar.getName());
             }
         }
     }
 
     public void deleteCarsWithInputBodyType() {
-        ListIterator<Car> listIterator = carList.listIterator();
+        Iterator<Car> iterator = carList.iterator();
         System.out.println("Input body type of car you want to delete:");
-        BodyTypes inputGBodyType = BodyTypes.valueOf(scan.next().toUpperCase());
-        while (listIterator.hasNext()) {
-            listIterator.next();
-            boolean inputBodyTypeIsEqualToInitial = carList.get(listIterator.previousIndex()).getBody().getType().equals(inputGBodyType);
+        BodyTypes inputBodyType = BodyTypes.toEnum(scan.next());
+        while (iterator.hasNext()) {
+            boolean inputBodyTypeIsEqualToInitial = iterator.next().getBody().getType() == inputBodyType;
             if (inputBodyTypeIsEqualToInitial) {
-                listIterator.remove();
+                iterator.remove();
             }
         }
     }
 
     public void setWinterTiresToCarsWithGivenDiameterRange() {
-        ListIterator<Car> listIterator = carList.listIterator();
+        Iterator<Car> iterator = carList.iterator();
         System.out.println("Input start of range you want:");
         int rangeStart = scan.nextInt();
         System.out.println("Input end of range you want:");
         int rangeEnd = scan.nextInt();
-        while (listIterator.hasNext()) {
-            listIterator.next();
-            boolean diameterIsInRange = carList.get(listIterator.previousIndex()).getWheels().getDiameter() > rangeStart && carList.get(listIterator.previousIndex()).getWheels().getDiameter() < rangeEnd;
+        while (iterator.hasNext()) {
+            Car currentCar = iterator.next();
+            boolean diameterIsInRange = currentCar.getWheels().getDiameter() > rangeStart && currentCar.getWheels().getDiameter() < rangeEnd;
             if (diameterIsInRange) {
-                carList.get(listIterator.previousIndex()).getWheels().setType(true);
-                System.out.println("Wheel type has been set to winter for " + carList.get(listIterator.previousIndex()).getName());
+                currentCar.getWheels().setType(true);
+                System.out.println("Wheel type has been set to winter for " + currentCar.getName());
             }
         }
     }
 
     public void deleteCarsWithInputBodyTypeAndDiameterRange() {
-        ListIterator<Car> listIterator = carList.listIterator();
+        Iterator<Car> iterator = carList.iterator();
         System.out.println("Input body type: ");
-        BodyTypes inputBodyType = BodyTypes.valueOf(scan.next().toUpperCase());
+        BodyTypes inputBodyType = BodyTypes.toEnum(scan.next());
         System.out.println("Input start of diameter range:");
         int rangeStart = scan.nextInt();
         System.out.println("Input end of diameter range:");
         int rangeEnd = scan.nextInt();
-        while (listIterator.hasNext()) {
-            listIterator.next();
-            boolean diameterIsInRange = carList.get(listIterator.previousIndex()).getWheels().getDiameter() > rangeStart && carList.get(listIterator.previousIndex()).getWheels().getDiameter() < rangeEnd;
-            boolean inputBodyTypeIsEqualToInitial = carList.get(listIterator.previousIndex()).getBody().getType().equals(inputBodyType);
+        while (iterator.hasNext()) {
+            Car currentCar = iterator.next();
+            boolean diameterIsInRange = currentCar.getWheels().getDiameter() > rangeStart && currentCar.getWheels().getDiameter() < rangeEnd;
+            boolean inputBodyTypeIsEqualToInitial = currentCar.getBody().getType() == inputBodyType;
             if (diameterIsInRange && inputBodyTypeIsEqualToInitial) {
-                listIterator.remove();
+                iterator.remove();
             }
         }
     }
 
-    public void findIndicesOfCarsWithInputBodyType() {
+    public void rememberIndicesOfCarsWithInputBodyType() {
         ListIterator<Car> listIterator = carList.listIterator();
         System.out.println("Input body type of car you want to find:");
-        BodyTypes inputBodyType = BodyTypes.valueOf(scan.next().toUpperCase());
+        BodyTypes inputBodyType = BodyTypes.toEnum(scan.next());
         while (listIterator.hasNext()) {
-            listIterator.next();
-            boolean inputBodyTypeIsEqualToInitial = carList.get(listIterator.previousIndex()).getBody().getType().equals(inputBodyType);
+            Car currentCar = listIterator.next();
+            boolean inputBodyTypeIsEqualToInitial = currentCar.getBody().getType() == inputBodyType;
             if (inputBodyTypeIsEqualToInitial) {
-                System.out.println("Car index with input body type is: " + listIterator.previousIndex());
+                carIndices.add(listIterator.previousIndex());
             }
         }
     }

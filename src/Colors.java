@@ -12,4 +12,8 @@ public enum Colors {
     Colors(String color) {
         this.color = color;
     }
+
+    public static Colors toEnum(String inputColor) {
+        return Colors.valueOf(inputColor.toUpperCase());
+    }
 }
