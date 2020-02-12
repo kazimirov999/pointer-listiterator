@@ -45,7 +45,7 @@ public class CarSearch {
         while (listIterator.hasNext()) {
             Car car = listIterator.next();
             if (car.wheel.getWheelRadius() >= inputRadiusLow && car.wheel.getWheelRadius() <= inputRadiusUp) {
-                car.wheel.setWinterTyre("Winter Tyres are dowloading...");
+                car.wheel.setWinterTyre("Winter Tyres are downloading...");
                 System.out.println(" Winter Tyres are on - " + car.getModel());
             }
         }
@@ -69,19 +69,18 @@ public class CarSearch {
         }
     }
 
-    public void rememberIndexofCarwithBodyType() {
+    public void rememberIndexOfCarWithBodyType() {
         ListIterator<Car> listIterator = carList.listIterator();
-        List<Object> index = new ArrayList<>();
+        List<List<Car>> index = new ArrayList<>();
         System.out.println("Write body type of a suitable car - ");
         String inputBodyType = scanStr.nextLine();
         while (listIterator.hasNext()) {
             Car car = listIterator.next();
             if (car.body.getBodyType().toString().equals(inputBodyType.toUpperCase())) {
-                index.add(0, "Car");
-                System.out.println(index);
+                index.add(carList);
+                System.out.println(car.getModel());
             }
 
         }
     }
-
 }

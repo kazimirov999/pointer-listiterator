@@ -20,7 +20,7 @@ public class Main {
         carSearch.deleteAllCarsWithBodyType();
         carSearch.exchangeOnWinterTyres();
         carSearch.deleteCarWithBodyTypeAndRadiusOfSteeringWheel();
-        carSearch.rememberIndexofCarwithBodyType();
+        carSearch.rememberIndexOfCarWithBodyType();
 
     }
 }
